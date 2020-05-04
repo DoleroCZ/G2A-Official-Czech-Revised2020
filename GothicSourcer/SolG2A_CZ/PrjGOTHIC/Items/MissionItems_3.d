@@ -1,0 +1,989 @@
+
+const int AM_EYEPROTEDGE = 10;
+const int AM_EYEPROTPOINT = 10;
+const int AM_EYEPROTMAGE = 20;
+const int AM_EYEPROTFIRE = 30;
+
+instance ITMI_INNOSEYE_MIS(C_ITEM)
+{
+	name = "Innosovo oko";
+	mainflag = ITEM_KAT_MAGIC;
+	flags = ITEM_AMULET | ITEM_MISSION;
+	value = 0;
+	visual = "ItMi_InnosEye_MIS.3DS";
+	material = MAT_STONE;
+	wear = WEAR_EFFECT;
+	effect = "SPELLFX_ITEMGLIMMER";
+	description = name;
+	on_equip = equip_innoseye;
+	on_unequip = unequip_innoseye;
+	text[0] = "Oko pulzuje tajemnou energiÌ.";
+	inv_zbias = INVCAM_ENTF_AMULETTE_STANDARD;
+};
+
+
+func void equip_innoseye()
+{
+	Wld_PlayEffect("spellFX_Innoseye",self,self,0,0,0,FALSE);
+	Wld_PlayEffect("spellFX_LIGHTSTAR_RED",self,self,0,0,0,FALSE);
+	Wld_PlayEffect("FX_EarthQuake",self,self,0,0,0,FALSE);
+	AI_PlayAni(self,"T_MAGRUN_2_HEASHOOT");
+	AI_Standup(self);
+	Snd_Play("SFX_INNOSEYE");
+	self.protection[PROT_EDGE] += AM_EYEPROTEDGE;
+	self.protection[PROT_BLUNT] += AM_EYEPROTEDGE;
+	self.protection[PROT_POINT] += AM_EYEPROTPOINT;
+	self.protection[PROT_FIRE] += AM_EYEPROTFIRE;
+	self.protection[PROT_MAGIC] += AM_EYEPROTMAGE;
+	PrintScreen("",-1,-1,FONT_SCREEN,0);
+};
+
+func void unequip_innoseye()
+{
+	self.protection[PROT_EDGE] -= AM_EYEPROTEDGE;
+	self.protection[PROT_BLUNT] -= AM_EYEPROTEDGE;
+	self.protection[PROT_POINT] -= AM_EYEPROTPOINT;
+	self.protection[PROT_FIRE] -= AM_EYEPROTFIRE;
+	self.protection[PROT_MAGIC] -= AM_EYEPROTMAGE;
+};
+
+
+instance ITMI_INNOSEYE_DISCHARGED_MIS(C_ITEM)
+{
+	name = "Innosovo oko";
+	mainflag = ITEM_KAT_MAGIC;
+	flags = ITEM_AMULET | ITEM_MISSION;
+	value = 0;
+	visual = "ItMi_InnosEye_MIS.3DS";
+	material = MAT_STONE;
+	description = name;
+	on_equip = equip_itmi_innoseye_discharged_mis;
+	text[0] = "Oko je ztemnÏlÈ - v˘bec nez·¯Ì.";
+	inv_zbias = INVCAM_ENTF_AMULETTE_STANDARD;
+};
+
+
+func void equip_itmi_innoseye_discharged_mis()
+{
+	Wld_PlayEffect("spellFX_Fear",self,self,0,0,0,FALSE);
+	Snd_Play("MFX_FEAR_CAST");
+};
+
+
+instance ITMI_INNOSEYE_BROKEN_MIS(C_ITEM)
+{
+	name = "Innosovo oko";
+	mainflag = ITEM_KAT_MAGIC;
+	flags = ITEM_AMULET | ITEM_MISSION;
+	value = 0;
+	visual = "ItMi_InnosEye_MIS.3DS";
+	material = MAT_STONE;
+	description = name;
+	on_equip = equip_itmi_innoseye_broken_mis;
+	text[0] = TEXT_INNOSEYE_SETTING;
+	text[1] = TEXT_INNOSEYE_GEM;
+	inv_zbias = INVCAM_ENTF_AMULETTE_STANDARD;
+};
+
+
+func void equip_itmi_innoseye_broken_mis()
+{
+	Wld_PlayEffect("spellFX_Fear",self,self,0,0,0,FALSE);
+	Snd_Play("MFX_FEAR_CAST");
+};
+
+
+instance ITWR_PERMISSIONTOWEARINNOSEYE_MIS(C_ITEM)
+{
+	name = "Pln· moc";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_01.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_permissiontowearinnoseye;
+	scemename = "MAP";
+	description = "Pln· moc pro Pyrokara.";
+};
+
+
+func void use_permissiontowearinnoseye()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetFont(ndocid,-1,FONT_BOOK);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"Nositel tohoto listu m˘ûe vstoupit do posv·tn˝ch sÌnÌ kl·ötera.");
+	Doc_PrintLines(ndocid,0,"Nechù je jeho p¯·nÌm ohlednÏ oka Innosova okamûitÏ vyhovÏno.");
+	Doc_PrintLines(ndocid,0,"Tyto rozkazy udÌlÌm na z·kladÏ svÈho postu vl·dce celÈho ostrova a kr·lova z·stupce, stejnÏ jako smlouvou od Innosova chr·mu ze 2. roku ohnÏ.");
+	Doc_PrintLines(ndocid,0,"V tÈto vÏci jiû neuËinÌm û·dn· dalöÌ prohl·öenÌ a oËek·v·m, ûe mÈ rozkazy budete respektovat.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"Nechù Innos poûehn· kr·li!");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"     Lord Hagen");
+	Doc_Show(ndocid);
+};
+
+
+instance ITWR_XARDASBOOKFORPYROKAR_MIS(C_ITEM)
+{
+	name = "SÌnÏ Irdorathovy";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Book_02_05.3ds";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+	on_state[0] = use_xardasbookforpyrokar;
+};
+
+
+func void use_xardasbookforpyrokar()
+{
+	Print(PRINT_IRDORATHBOOKDOESNTOPEN);
+	Wld_PlayEffect("spellFX_Fear",self,self,0,0,0,FALSE);
+	Snd_Play("MFX_FEAR_CAST");
+};
+
+
+instance ITKE_CHEST_SEKOB_XARDASBOOK_MIS(C_ITEM)
+{
+	name = "Xardas˘v klÌË";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MISSION;
+	value = VALUE_KEY_02;
+	visual = "ItKe_Key_02.3ds";
+	material = MAT_METAL;
+	description = name;
+	text[0] = "od bedny na SekobovÏ farmÏ.";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+instance ITWR_CORNELIUSTAGEBUCH_MIS(C_ITEM)
+{
+	name = "Z·pisnÌk";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Book_01.3ds";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	description = "Z·pisnÌk";
+	text[0] = "Corneli˘v z·pisnÌk.";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+	on_state[0] = usecorneliustagebuch;
+};
+
+
+func void usecorneliustagebuch()
+{
+	var int ndocid;
+	CORNELIUS_ISLIAR = TRUE;
+	b_logentry(TOPIC_RESCUEBENNET,"Tento z·pisnÌk dokazuje, ûe Bennet je nevinn˝.");
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,2);
+	Doc_SetPage(ndocid,0,"Book_Brown_L.tga",0);
+	Doc_SetPage(ndocid,1,"Book_Brown_R.tga",0);
+	Doc_SetFont(ndocid,-1,FONT_BOOK);
+	Doc_SetMargins(ndocid,0,275,20,30,20,1);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"Jestli bude Larius takhle pokraËovat, budu si muset najÌt jinou pozici.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"VËera veËer se mi stala prapodivn· vÏc. P¯iöel ke mnÏ jeden z tÏch Ëern˝ch zakuklenc˘, o kter˝ch jsme toho v poslednÌ dobÏ tolik slyöeli. Nebyl jsem moc nervÛznÌ, i kdyû z tajemnÈho n·vötÏvnÌka p¯Ìmo Ëiöelo nÏjakÈ zlo a jeho moc byla skoro hmatateln·. Jeho hlas byl vöak klidn˝ a p¯Ìjemn˝ - mÏl jsem pocit, ûe mu prostÏ musÌm vÏ¯it.");
+	Doc_SetMargins(ndocid,-1,30,20,275,20,1);
+	Doc_PrintLine(ndocid,1,"");
+	Doc_PrintLines(ndocid,1,"NabÌdl mi 20 000 zlaù·k˘, kdyû se postar·m, aby byl jeden z tÏch ûold·k˘ uzn·n vinn˝m. Pr˝ vÌm, co tÌm myslÌ.");
+	Doc_PrintLines(ndocid,1,"Samoz¯ejmÏ ûe jsem souhlasil, protoûe ta ch·tra si stejnÏ nic jinÈho nezaslouûÌ. Neb˝t jich, mÏl bych se teÔ mnohem lÌp. A zlato, kterÈ za to dostanu, mi zajistÌ sluönÈ ûivobytÌ aû do smrti.");
+	Doc_PrintLine(ndocid,1,"");
+	Doc_PrintLines(ndocid,1,"Jednoho z tÏch ûold·k˘ uû majÌ pod z·mkem, takûe svÈ slovo opravdu hravÏ splnÌm.");
+	Doc_Show(ndocid);
+	PrintScreen("",-1,-1,FONT_SCREEN,0);
+};
+
+
+instance ITWR_DEMENTOROBSESSIONBOOK_MIS(C_ITEM)
+{
+	name = "Almanach posedl˝ch";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MULTI | ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Book_02_05.3ds";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+	on_state[0] = use_dementorobsessionbook;
+};
+
+
+func void use_dementorobsessionbook()
+{
+	var int ndocid;
+	Wld_PlayEffect("spellFX_Fear",hero,hero,0,0,0,FALSE);
+	Snd_Play("MFX_FEAR_CAST");
+	SC_OBSESSIONCOUNTER = 100;
+	b_scisobsessed(hero);
+	if(hero.guild == GIL_KDF)
+	{
+		ndocid = Doc_Create();
+		Doc_SetPages(ndocid,2);
+		Doc_SetPage(ndocid,0,"BOOK_MAGE_L.tga",0);
+		Doc_SetPage(ndocid,1,"BOOK_MAGE_R.tga",0);
+		Doc_SetMargins(ndocid,0,275,20,30,20,1);
+		Doc_SetFont(ndocid,0,FONT_BOOKHEADLINE);
+		Doc_PrintLine(ndocid,0,"");
+		Doc_SetFont(ndocid,0,FONT_BOOK);
+		Doc_PrintLines(ndocid,0,"edef Kon dirandorix");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"in Sparady bell ");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"el utoy");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0," Kho ray xaondron");
+		Doc_PrintLines(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLines(ndocid,0,"em piratoram endro");
+		Doc_SetMargins(ndocid,-1,30,20,275,20,1);
+		Doc_SetFont(ndocid,1,FONT_BOOKHEADLINE);
+		Doc_SetFont(ndocid,1,FONT_BOOK);
+		Doc_PrintLine(ndocid,1,"");
+		Doc_PrintLine(ndocid,1,"");
+		if(KAPITEL >= 3)
+		{
+			Doc_PrintLine(ndocid,1,"          VINO");
+			Doc_PrintLine(ndocid,1,"FERNANDO");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"     MALAK");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"BROMOR");
+		};
+		if(KAPITEL >= 4)
+		{
+			Doc_PrintLine(ndocid,1,"          ENGROM");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"     RANDOLPH");
+			Doc_PrintLine(ndocid,1,"");
+		};
+		if(KAPITEL >= 5)
+		{
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"          SEKOB");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"");
+			Doc_PrintLine(ndocid,1,"     BRUTUS");
+			Doc_PrintLine(ndocid,1,"");
+		};
+		Doc_Show(ndocid);
+	};
+};
+
+
+instance ITWR_PYROKARSOBSESSIONLIST(C_ITEM)
+{
+	name = "Pyrokar˘v magick˝ svitek";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_02.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_pyrokarsobsessionlist;
+	scemename = "MAP";
+	description = name;
+};
+
+
+func void use_pyrokarsobsessionlist()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetFont(ndocid,0,FONT_BOOKHEADLINE);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_PrintLine(ndocid,0,"Posedl˝");
+	Doc_SetFont(ndocid,0,FONT_BOOK);
+	if(KAPITEL >= 3)
+	{
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"FERNANDO");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"VINO");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"MALAK");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"BROMOR");
+	};
+	if(KAPITEL >= 4)
+	{
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"ENGROM");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"RANDOLPH");
+	};
+	if(KAPITEL >= 5)
+	{
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"SEKOB");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"BRUTUS");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+		Doc_PrintLine(ndocid,0,"");
+	};
+	Doc_Show(ndocid);
+};
+
+
+instance ITPO_HEALHILDA_MIS(C_ITEM)
+{
+	name = NAME_TRANK;
+	mainflag = ITEM_KAT_POTIONS;
+	flags = ITEM_MULTI | ITEM_MISSION;
+	value = VALUE_HPESSENZ;
+	visual = "ItMi_Flask.3ds";
+	material = MAT_GLAS;
+	on_state[0] = use_healhilda;
+	scemename = "POTIONFAST";
+	wear = WEAR_EFFECT;
+	effect = "SPELLFX_ITEMGLIMMER";
+	description = "LÈËÌ Ëernou horeËku";
+	text[1] = NAME_BONUS_HP;
+	count[1] = HP_ESSENZ;
+	text[5] = NAME_VALUE;
+	count[5] = VALUE_HPESSENZ;
+};
+
+
+func void use_healhilda()
+{
+	Npc_ChangeAttribute(self,ATR_HITPOINTS,HP_ESSENZ);
+};
+
+
+instance ITMW_MALETHSGEHSTOCK_MIS(C_ITEM)
+{
+	name = "Vych·zkov· h˘l";
+	mainflag = ITEM_KAT_NF;
+	flags = ITEM_AXE;
+	material = MAT_WOOD;
+	value = VALUE_VLKMACE;
+	damagetotal = DAMAGE_VLKMACE;
+	damagetype = DAM_BLUNT;
+	range = RANGE_VLKMACE;
+	cond_atr[2] = ATR_STRENGTH;
+	cond_value[2] = CONDITION_VLKMACE;
+	visual = "Itmw_008_1h_pole_01.3ds";
+	description = name;
+	text[0] = "Na rukojeti je vyvedeno";
+	text[1] = "ozdobnÈ pÌsmeno M.";
+	text[2] = NAME_DAMAGE;
+	count[2] = damagetotal;
+	text[3] = NAME_STR_NEEDED;
+	count[3] = cond_value[2];
+	text[4] = NAME_ONEHANDED;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+instance ITMI_MALETHSBANDITGOLD(C_ITEM)
+{
+	name = "MÏöec nadit˝ zlatem!";
+	mainflag = ITEM_KAT_NONE;
+	flags = 0;
+	value = 0;
+	visual = "ItMi_Pocket.3ds";
+	scemename = "MAPSEALED";
+	material = MAT_METAL;
+	on_state[0] = use_malethsbanditgold;
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+func void use_malethsbanditgold()
+{
+	b_playerfinditem(itmi_gold,300);
+};
+
+
+instance ITMI_MOLERATLUBRIC_MIS(C_ITEM)
+{
+	name = "Tlust˝ krysokrt";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MULTI;
+	value = VALUE_PITCH;
+	visual = "ItMi_Moleratlubric.3ds";
+	material = MAT_WOOD;
+	description = name;
+	text[4] = NAME_VALUE;
+	count[4] = value;
+};
+
+instance ITWR_BABOSLETTER_MIS(C_ITEM)
+{
+	name = "Dopis Babovi";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_01.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_babosletter;
+	scemename = "MAP";
+	description = "Dopis pro Baba.";
+};
+
+
+func void use_babosletter()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetFont(ndocid,-1,FONT_BOOK);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_PrintLine(ndocid,0,"Mil˝ Babo,");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"UrËitÏ se divÌö, jak to, ûe ti pÌöeme. Donesli jsme totiû mistru Marlasovi vöechny ˙spory a poû·dali ho, aby tyto ¯·dky napsal za n·s. P¯ejeme ti do budoucna jen to nejlepöÌ a jako d·rek na rozlouËenou ti posÌl·me obr·zek, abys mÏl na co vzpomÌnat za dlouh˝ch veËer˘ v kl·öte¯e.");
+	Doc_PrintLines(ndocid,0,"Mnoho ötÏstÌ - snad se ti ta mal˘vka bude lÌbit.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"Feht a Bonka");
+	Doc_Show(ndocid);
+};
+
+
+instance ITWR_BABOSPINUP_MIS(C_ITEM)
+{
+	name = "Obr·zek ûeny";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_01.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_babospinup;
+	scemename = "MAP";
+	description = "Obr·zek nahÈ ûeny.";
+};
+
+
+func void use_babospinup()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"Map_Pinup.TGA",0);
+	Doc_Show(ndocid);
+};
+
+
+instance ITWR_BABOSDOCS_MIS(C_ITEM)
+{
+	name = "Dokumenty";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_02.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_babosdocs;
+	scemename = "MAPSEALED";
+	description = name;
+	text[2] = "SrolovanÈ";
+	text[3] = "dokumenty.";
+};
+
+
+func void use_babosdocs()
+{
+	BABOSDOCSOPEN = TRUE;
+	CreateInvItems(self,itwr_babosletter_mis,1);
+	CreateInvItems(self,itwr_babospinup_mis,1);
+};
+
+
+instance ITKE_IGARAZCHEST_MIS(C_ITEM)
+{
+	name = "KlÌË od truhlice";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MISSION;
+	value = VALUE_KEY_01;
+	visual = "ItKe_Key_01.3ds";
+	material = MAT_METAL;
+	description = name;
+	text[2] = "KlÌË od Igarazovy";
+	text[3] = "truhlice.";
+};
+
+instance ITWR_ASTRONOMY_MIS(C_ITEM)
+{
+	name = "Boûsk· moc hvÏzd";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 400;
+	visual = "ItWr_Book_02_02.3ds";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+	on_state[0] = use_astronomy;
+};
+
+
+var int astronomy_once;
+
+func void use_astronomy()
+{
+	var int ndocid;
+	if(ASTRONOMY_ONCE == FALSE)
+	{
+		b_raiseattribute(self,ATR_MANA_MAX,2);
+		Print(PRINT_READASTRONOMY);
+		ASTRONOMY_ONCE = TRUE;
+	};
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,2);
+	Doc_SetPage(ndocid,0,"Book_Mage_L.tga",0);
+	Doc_SetPage(ndocid,1,"Book_Mage_R.tga",0);
+	Doc_SetFont(ndocid,-1,FONT_BOOK);
+	Doc_SetMargins(ndocid,0,275,20,30,20,1);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"...ale kdyû se sÌla vola spojÌ s v·leËnick˝mi ide·ly, pak se st¯ezte ud·lostÌ, kterÈ mohou nastat.");
+	Doc_PrintLines(ndocid,0,"Nespoutan· volsk· sÌla a vytrvalost v·leËnÌka dok·ûe naruöit prad·vnou rovnov·hu sil. Hranice mezi dimenzemi pak zaËne sl·bnout - aû nakonec bude tak tenk·, ûe k n·m ze svÏta stÌn˘ snadno proniknou Beliarovy nestv˘ry. ");
+	Doc_SetMargins(ndocid,-1,30,20,275,20,1);
+	Doc_PrintLine(ndocid,1,"");
+	Doc_PrintLines(ndocid,1,"V·lky ze star˝ch Ëas˘ n·m budiû p¯Ìkladem, jak nÏco takovÈho dopad·. I kdyû tehdy byla vazba mezi svÏty jeötÏ st·le pevn·, stoupenci zla sem p¯inesli smrt a zk·zu, p¯ed kterou lidstvo ochr·nil pouze Innos a jeho vyvolen˝. ");
+	Doc_PrintLines(ndocid,1,"Innos n·s chraÚ, jestli by se mÏla podobn· hrozba znovu objevit, protoûe û·dn˝ dalöÌ Innos˘v vyvolen˝ nep¯iöel uû vÌc jak sto let.");
+	Doc_PrintLine(ndocid,1,"");
+	Doc_PrintLines(ndocid,1,"");
+	Doc_Show(ndocid);
+};
+
+
+var int sc_obsessiontimes;
+
+instance ITPO_HEALOBSESSION_MIS(C_ITEM)
+{
+	name = NAME_TRANK;
+	mainflag = ITEM_KAT_POTIONS;
+	flags = ITEM_MULTI | ITEM_MISSION;
+	value = VALUE_HPESSENZ;
+	visual = "ItMi_Flask.3ds";
+	material = MAT_GLAS;
+	on_state[0] = use_healobsession;
+	scemename = "POTIONFAST";
+	wear = WEAR_EFFECT;
+	effect = "SPELLFX_ITEMGLIMMER";
+	description = "LÈk pro posedlÈ";
+	text[1] = NAME_BONUS_HP;
+	count[1] = HP_ESSENZ;
+	text[5] = NAME_VALUE;
+	count[5] = VALUE_HPESSENZ;
+};
+
+
+func void use_healobsession()
+{
+	Npc_ChangeAttribute(self,ATR_HITPOINTS,HP_ESSENZ);
+	SC_OBSESSIONTIMES = SC_OBSESSIONTIMES + 1;
+	b_clearscobsession(self);
+	Wld_PlayEffect("spellFX_LIGHTSTAR_VIOLET",hero,hero,0,0,0,FALSE);
+	Snd_Play("SFX_HealObsession");
+};
+
+
+instance ITSE_GOLEMCHEST_MIS(C_ITEM)
+{
+	name = "MÏöec";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MULTI | ITEM_MISSION;
+	value = 0;
+	visual = "ItMi_Pocket.3ds";
+	scemename = "MAPSEALED";
+	material = MAT_METAL;
+	on_state[0] = use_golemchest;
+	description = "MÏöec";
+	text[0] = "";
+	text[1] = "";
+	text[2] = "Tento v·Ëek je pln˝ mincÌ.";
+	text[3] = "";
+	text[4] = "";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+func void use_golemchest()
+{
+	CreateInvItems(hero,itmi_gold,50);
+	Print(PRINT_FOUNDGOLD50);
+	Print(PRINT_FOUNDRING);
+	CreateInvItems(hero,itri_prot_total_02,1);
+	Snd_Play("MÏöec");
+};
+
+
+instance ITWR_SHATTEREDGOLEM_MIS(C_ITEM)
+{
+	name = "Velmi star· mapa";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 150;
+	visual = "ItWr_Map_01.3DS";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	on_state[0] = use_shatteredgolem_mis;
+	description = name;
+	text[0] = "";
+	text[1] = "";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+func void use_shatteredgolem_mis()
+{
+	var int document;
+	if(Npc_IsPlayer(self))
+	{
+		b_setplayermap(itwr_shatteredgolem_mis);
+	};
+	document = Doc_CreateMap();
+	Doc_SetPages(document,1);
+	Doc_SetPage(document,0,"Map_NewWorld_ShatteredGolem.tga",TRUE);
+	Doc_SetLevel(document,"NewWorld\NewWorld.zen");
+	Doc_SetLevelCoords(document,-28000,50500,95500,-42500);
+	Doc_Show(document);
+};
+
+
+instance ITWR_DIEGOSLETTER_MIS(C_ITEM)
+{
+	name = "Dopis od Diega";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_01.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_diegosletter_mis;
+	scemename = "MAP";
+	description = "Dieg˘v dopis Gerbrandtovi.";
+};
+
+
+func void use_diegosletter_mis()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetFont(ndocid,-1,FONT_BOOK);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_PrintLine(ndocid,0,"Gerbrandte, ");
+	Doc_PrintLines(ndocid,0,"vÌö, mÏl jsi mÏ radöi zabÌt. ");
+	Doc_PrintLines(ndocid,0,"TeÔ jsem zp·tky ve mÏstÏ a hled·m tÏ. A aû tÏ najdu, nadÏl·m z tebe sekanou. Zn·ö mÏ uû dost dlouho, abys vÏdÏl, ûe se jen tak lehce oblbnout nenech·m.");
+	Doc_PrintLines(ndocid,0,"PoËÌt·m, ûe kdyû jsi mÏ h·zel p¯es bariÈru, ani ve snu tÏ nenapadlo, ûe bych se mohl vr·tit. A to byla chyba. ");
+	Doc_PrintLines(ndocid,0,"Vezmu si zp·tky, co mi pat¯Ì. ");
+	Doc_PrintLines(ndocid,0,"Jestli je ti ûivot mil˝, tak si sbalÌö fidl·tka a sv˘j obchod p¯enech·ö mnÏ. TÌm si budeme kvit.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"Diego");
+	Doc_Show(ndocid);
+};
+
+
+instance ITSE_DIEGOSTREASURE_MIS(C_ITEM)
+{
+	name = "Pln˝ mÏöec";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItMi_Pocket.3ds";
+	scemename = "MAPSEALED";
+	material = MAT_METAL;
+	on_state[0] = use_diegostreasure;
+	description = "Diegov˘v star˝ mÏöec.";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+func void use_diegostreasure()
+{
+	OPENEDDIEGOSBAG = TRUE;
+	b_playerfinditem(itmi_gold,DIEGOSTREASURE);
+};
+
+
+instance ITMI_ULTHARSHOLYWATER_MIS(C_ITEM)
+{
+	name = "Ultharova svÏcen· voda";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MISSION | ITEM_MULTI;
+	value = VALUE_HOLYWATER;
+	visual = "ItMi_HolyWater.3ds";
+	material = MAT_WOOD;
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+var int itwr_minenanteil_mis_onetime;
+
+instance ITWR_MINENANTEIL_MIS(C_ITEM)
+{
+	name = "Akcie khorinissk˝ch rudn˝ch dol˘";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION | ITEM_MULTI;
+	value = VALUE_HPELIXIER;
+	visual = "ItWr_Scroll_01.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_minenanteil_mis;
+	scemename = "MAP";
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+func void use_minenanteil_mis()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetFont(ndocid,0,FONT_BOOKHEADLINE);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_PrintLine(ndocid,0,"Akcie rudn˝ch dol˘");
+	Doc_SetFont(ndocid,0,FONT_BOOK);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"TÌmto dokumentem d·v· kr·l a vl·dce tÈto ¯Ìöe jeho nositeli pr·vo kutat na ˙zemÌ pod kr·lovskou spr·vou.");
+	Doc_PrintLines(ndocid,0,"Svou p˘sobnost vöak musÌ omezit na jedno malÈ kr·lovskÈ pole.");
+	Doc_PrintLines(ndocid,0,"Podle listiny o velikosti dol˘ ËinÌ jedno malÈ kr·lovskÈ pole 16 yard˘ na öÌ¯ku a 3 yardy na v˝öku.");
+	Doc_PrintLines(ndocid,0,"Kr·lovsk˝ prospektor nenÌ povinen zajistit voln˝ p¯Ìstup a ochranu d˘lnÌch cel.");
+	Doc_PrintLines(ndocid,0,"Nebude-li n·jemce moci uhradit n·jemnÈ, p¯ejdou vöechna pr·va zpÏt pod spr·vu ¯Ìöe.");
+	Doc_PrintLine(ndocid,0,"     Podeps·n");
+	Doc_PrintLine(ndocid,0,"     Kr·lovsk˝ prospektor");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"          Salandril");
+	Doc_Show(ndocid);
+	SC_KNOWSPROSPEKTORSALANDRIL = TRUE;
+	if(ITWR_MINENANTEIL_MIS_ONETIME == FALSE)
+	{
+		b_logentry(TOPIC_MINENANTEILE,"Ten chlapÌk, kter˝ prodal d˘lnÌ akcie obchodnÌk˘m, se jmenoval Salandril. Najdu ho nejspÌö v hornÌ Ëtvrti Khorinisu, jestli tedy uû p¯ed spravedlnostÌ neutekl nÏkam d·l.");
+		if(Npc_IsDead(salandril))
+		{
+			b_logentry(TOPIC_MINENANTEILE,"Salandril je mrtev. MusÌm to ozn·mit Serpentovi.");
+		};
+		ITWR_MINENANTEIL_MIS_ONETIME = TRUE;
+	};
+};
+
+
+instance ITAM_PROT_BLACKEYE_MIS(C_ITEM)
+{
+	name = "Amulet p¯ivol·v·nÌ duöÌ";
+	mainflag = ITEM_KAT_MAGIC;
+	flags = ITEM_AMULET | ITEM_MISSION;
+	value = VALUE_AM_HPMANA;
+	visual = "ItAm_Hp_Mana_01.3ds";
+	visual_skin = 0;
+	material = MAT_METAL;
+	wear = WEAR_EFFECT;
+	effect = "SPELLFX_ITEMGLIMMER";
+	description = name;
+	text[2] = "";
+	text[3] = "Amulet ochrany p¯ed uhranutÌm";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+	inv_zbias = INVCAM_ENTF_AMULETTE_STANDARD;
+};
+
+instance ITMI_KARRASBLESSEDSTONE_MIS(C_ITEM)
+{
+	name = "K·men ze svatÈ p˘dy";
+	mainflag = ITEM_KAT_NONE;
+	flags = ITEM_MISSION | ITEM_MULTI;
+	value = 0;
+	visual = "ItMi_Rockcrystal.3ds";
+	visual_skin = 0;
+	material = MAT_STONE;
+	description = name;
+	text[2] = "";
+	text[3] = "";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+instance ITWR_RICHTERKOMPROBRIEF_MIS(C_ITEM)
+{
+	name = "Rozkazy od soudce";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_02.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_richterkomprobrief;
+	scemename = "MAP";
+	description = name;
+};
+
+
+func void use_richterkomprobrief()
+{
+	var int ndocid;
+	SCKNOWSRICHTERKOMPROBRIEF = TRUE;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_SetFont(ndocid,0,FONT_BOOK);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"Morgaharde, ty mizern˝ budiûkniËemu! BuÔ vyplnÌö moje rozkazy, nebo se naötvu a nech·m v·s vöechny zav¯Ìt, aû zËern·te!");
+	Doc_PrintLines(ndocid,0,"MusÌte to provÈst dneska v noci, Larius zaËÌn· nÏco tuöit. ");
+	Doc_PrintLines(ndocid,0,"Jestli mu kapsy nevybereme teÔ, pak uû m˘ûe b˝t pozdÏ. Postar·m se, aby ses s nÌm setkal dneska veËer na trhu. ");
+	Doc_PrintLines(ndocid,0,"Ale ne abys z toho dÏlal estr·du, jinak tÏ domobrana zatkne, neû se staËÌö rozkoukat.");
+	Doc_PrintLines(ndocid,0,"Mimochodem, kdyby p¯itom n·hodou nat·hl brka, docela by se mi to hodilo.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"          Kr·lovsk˝ soudce ");
+	Doc_PrintLine(ndocid,0,"          a tajemnÌk");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_Show(ndocid);
+};
+
+
+instance ITWR_MORGAHARDTIP(C_ITEM)
+{
+	name = "Dopis";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 0;
+	visual = "ItWr_Scroll_01.3DS";
+	material = MAT_LEATHER;
+	on_state[0] = use_morgahardtip;
+	scemename = "MAP";
+	description = name;
+};
+
+
+func void use_morgahardtip()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,1);
+	Doc_SetPage(ndocid,0,"letters.TGA",0);
+	Doc_SetMargins(ndocid,-1,50,50,50,50,1);
+	Doc_SetFont(ndocid,0,FONT_BOOK);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"PokraËuji d·l. Douf·m, ûe aû se to trochu uklidnÌ, zase se setk·me.");
+	Doc_PrintLines(ndocid,0,"é·dnÈ strachy, hoöi. Kdyû selûe vöechno ostatnÌ, poû·d·m Onara, aby na to dohlÈdl.");
+	Doc_PrintLines(ndocid,0,"To bude v po¯·dku.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"     M.");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_Show(ndocid);
+};
+
+
+instance ITWR_MAP_SHRINE_MIS(C_ITEM)
+{
+	name = "Mapa olt·¯˘";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION | ITEM_MULTI;
+	value = 200;
+	visual = "ItWr_Map_01.3DS";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	on_state[0] = use_map_newworld_shrine_mis;
+	description = name;
+	text[0] = "";
+	text[1] = "";
+	text[5] = NAME_VALUE;
+	count[5] = value;
+};
+
+
+func void use_map_newworld_shrine_mis()
+{
+	var int document;
+	if(Npc_IsPlayer(self))
+	{
+		b_setplayermap(itwr_map_shrine_mis);
+	};
+	document = Doc_CreateMap();
+	Doc_SetPages(document,1);
+	Doc_SetPage(document,0,"Map_NewWorld_Shrine.tga",TRUE);
+	Doc_SetLevel(document,"NewWorld\NewWorld.zen");
+	Doc_SetLevelCoords(document,-28000,50500,95500,-42500);
+	Doc_Show(document);
+};
+
+
+instance ITWR_VINOSKELLERGEISTER_MIS(C_ITEM)
+{
+	name = "Duch vÌna";
+	mainflag = ITEM_KAT_DOCS;
+	flags = ITEM_MISSION;
+	value = 50;
+	visual = "ItWr_Book_02_05.3ds";
+	material = MAT_LEATHER;
+	scemename = "MAP";
+	description = name;
+	text[5] = NAME_VALUE;
+	count[5] = value;
+	on_state[0] = use_vinoskellergeister_mis;
+};
+
+
+func void use_vinoskellergeister_mis()
+{
+	var int ndocid;
+	ndocid = Doc_Create();
+	Doc_SetPages(ndocid,2);
+	Doc_SetPage(ndocid,0,"BOOK_RED_L.tga",0);
+	Doc_SetPage(ndocid,1,"BOOK_RED_R.tga",0);
+	Doc_SetMargins(ndocid,0,275,20,30,20,1);
+	Doc_SetFont(ndocid,0,FONT_BOOKHEADLINE);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"Moc hrozn˘");
+	Doc_SetFont(ndocid,0,FONT_BOOK);
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"...uû jsem toho v ûivotÏ vyzkouöel spoustu, ale tohle ovoce, kterÈ mi minul˝ t˝den p¯ivezli z ciziny, p¯edËilo vöechna m· oËek·v·nÌ...");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLine(ndocid,0,"");
+	Doc_PrintLines(ndocid,0,"...öù·va z tÏchto hrozn˘ je daleko vydatnÏjöÌ, neû to, co lze zÌskat v tÏchto konËin·ch...");
+	Doc_PrintLines(ndocid,0,"");
+	Doc_SetMargins(ndocid,-1,30,20,275,20,1);
+	Doc_SetFont(ndocid,1,FONT_BOOKHEADLINE);
+	Doc_SetFont(ndocid,1,FONT_BOOK);
+	Doc_PrintLine(ndocid,1,"");
+	Doc_PrintLines(ndocid,1,"...takûe zatÌm to jde dob¯e. Ale po¯·d mi ned· sp·t pomyölenÌ, co by se mohlo st·t, kdyby nÏkdo naöel m˘j tajn˝ destilaËnÌ apar·t. Radöi ani nechci vÏdÏt, co by mi za to dr·bovÈ provedli - nakonec by mÏ mohli hodit p¯es bariÈru...");
+	Doc_PrintLine(ndocid,1,"");
+	Doc_PrintLines(ndocid,1,"...zaËÌnajÌ mÌt podez¯enÌ. Radöi se odsud uklidÌm a chvÌli poËk·m, aû se vÏci trochu uklidnÌ a budu se moci opÏt vr·tit k pr·ci. HlavnÏ musÌm mÌt jistotu, ûe po mnÏ uû nejdou...");
+	Doc_Show(ndocid);
+};
+

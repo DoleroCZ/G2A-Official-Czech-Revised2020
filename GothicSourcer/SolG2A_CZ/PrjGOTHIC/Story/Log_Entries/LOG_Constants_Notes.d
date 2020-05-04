@@ -1,0 +1,20 @@
+
+const string TOPIC_TRADER_OC = "Obchodování na hradì.";
+const string TOPIC_CITYTRADER = "Obchodování v Khorinisu.";
+const string TOPIC_OUTTRADER = "Obchodování v divoèinì.";
+const string TOPIC_SOLDIERTRADER = "Obchodování na Onarovì farmì.";
+const string TOPIC_TEACHER = "Uèení.";
+const string TOPIC_TEACHER_OC = "Uèení na hradì.";
+const string TOPIC_SOLDIERTEACHER = "Uèení na Onarovì farmì.";
+const string TOPIC_OUTTEACHER = "Uèení v divoèinì.";
+const string TOPIC_CITYTEACHER = "Uèení v Khorinisu.";
+const string TOPIC_ADDON_KDWTEACHER = "Uèení u mágù Vody.";
+const string TOPIC_TALENTSMITH = "Kování";
+const string TOPIC_TALENTRUNES = "Runy";
+const string TOPIC_TALENTALCHEMY = "Lektvary";
+const string TOPIC_TALENTANIMALTROPHY = "Zvíøecí trofeje";
+const string TOPIC_TALENTMAGICCIRCLE = "Magické kruhy";
+const string TOPIC_WISPDETECTOR = "Pátrající bludièka";
+const string TOPIC_LANGUAGE = "Jazyk";
+const string TOPIC_BONUS = "Zvláštnosti";
+const string TOPIC_DIEBESGILDE = "Zlodìjský cech";
